@@ -10,7 +10,7 @@ export default function TrendingMovies({ data }: { data: MovieItem[] }) {
     console.log("Movie clicked!");
   };
   return (
-    <View className={"mb-8"}>
+    <View className={"mb-4"}>
       <Text className={"text-white text-xl mx-4 mb-5"}>Trending Movies</Text>
       <Carousel<MovieItem>
         data={data}

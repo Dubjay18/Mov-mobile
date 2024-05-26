@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { themeStyles } from "@/constants/Colors";
 import TrendingMovies from "@/components/TrendingMovies";
 import { MovieItem } from "@/config/api";
+import MovieList from "@/components/MovieList";
 
 export default function Index() {
   const movies: MovieItem[] = [
@@ -45,6 +46,10 @@ export default function Index() {
   ];
   const [trendingMovies, setTrendingMovies] =
     React.useState<MovieItem[]>(movies);
+  const [upcomingMovies, setUpcomingMovies] =
+    React.useState<MovieItem[]>(movies);
+  const [topRatedMovies, setTopRatedMovies] =
+    React.useState<MovieItem[]>(movies);
   return (
     <SafeAreaView className={"flex-1 bg-neutral-900"}>
       <StatusBar style="light" />
@@ -61,8 +66,9 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 10 }}
       >
-        {/*//TODO: Add carousel here*/}
         <TrendingMovies data={trendingMovies} />
+        <MovieList data={upcomingMovies} title={"Upcoming"} />
+        <MovieList data={topRatedMovies} title={"Top Rated"} />
       </ScrollView>
     </SafeAreaView>
   );
