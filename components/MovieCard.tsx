@@ -1,22 +1,25 @@
-import {Text, TouchableWithoutFeedback, View} from "react-native";
-import {MovieItem} from "@/config/api";
+import { Dimensions, Image, TouchableWithoutFeedback } from "react-native";
+import { MovieItem } from "@/config/api";
+
+var { width, height } = Dimensions.get("window");
 
 export default function MovieCard({
-                                      movie,
-                                  }: {
-    movie: MovieItem
+  movie,
+  handleClick,
+}: {
+  movie: MovieItem;
+  handleClick: () => void;
 }) {
-    return (
-        <TouchableWithoutFeedback>
-
-            <View className={"flex-row items-center"}>
-                <Image source={{uri: movie.poster_path}} className={"w-32 h-48 rounded-lg"}/>
-                <View className={"ml-4"}>
-                    <Text className={"text-white text-lg"}>{movie.title}</Text>
-                    <Text className={"text-gray-400"}>{movie.release_date}</Text>
-                </View>
-            </View>
-        </TouchableWithoutFeedback>
-    );
-
+  return (
+    <TouchableWithoutFeedback onPress={handleClick}>
+      <Image
+        source={require("../assets/images/sukuna.jpg")}
+        className={"rounded-3xl"}
+        style={{
+          width: width * 0.6,
+          height: height * 0.4,
+        }}
+      />
+    </TouchableWithoutFeedback>
+  );
 }
