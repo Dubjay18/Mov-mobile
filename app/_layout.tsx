@@ -13,12 +13,14 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { TouchableOpacity, View } from "react-native";
 import { themeStyles } from "@/constants/Colors";
 import { ChevronLeftIcon } from "react-native-heroicons/solid";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const queryClient = new QueryClient();
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
@@ -35,36 +37,38 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="Movie"
-          options={{
-            headerShown: false,
-            header: (props) => (
-              <>
-                <View
-                  className={
-                    " z-20 w-full flex-row justify-between items-center px-4 h-fit"
-                  }
-                >
-                  <TouchableOpacity
-                    style={themeStyles.background}
-                    className={"rounded-xl p-1 "}
+      <QueryClientProvider client={queryClient}>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Movie"
+            options={{
+              headerShown: false,
+              header: (props) => (
+                <>
+                  <View
+                    className={
+                      " z-20 w-full flex-row justify-between items-center px-4 h-fit"
+                    }
                   >
-                    <ChevronLeftIcon
-                      size={28}
-                      strokeWidth={2.5}
-                      color={"white"}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </>
-            ),
-          }}
-        />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+                    <TouchableOpacity
+                      style={themeStyles.background}
+                      className={"rounded-xl p-1 "}
+                    >
+                      <ChevronLeftIcon
+                        size={28}
+                        strokeWidth={2.5}
+                        color={"white"}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </>
+              ),
+            }}
+          />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

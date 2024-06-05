@@ -21,6 +21,8 @@ export default function MovieList({
   title: string;
 }) {
   const router = useRouter();
+  const imageBaseUrl = "https://image.tmdb.org/t/p/original";
+
   return (
     <View className={"mb-4 space-y-8"}>
       <View className={"mx-4 flex-row justify-between items-center"}>
@@ -48,7 +50,7 @@ export default function MovieList({
           >
             <View className={"space-y-1 mr-4"}>
               <Image
-                source={require("../assets/images/sukuna.jpg")}
+                source={{ uri: `${imageBaseUrl}${movie?.poster_path}` }}
                 className={"rounded-3xl"}
                 style={{
                   width: width * 0.33,

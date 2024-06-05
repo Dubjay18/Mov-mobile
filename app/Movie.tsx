@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { MovieItem } from "@/config/api";
+import Cast from "@/components/Cast";
 
 var { width, height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
@@ -117,6 +118,30 @@ export default function MovieScreen() {
         <Text className={"text-neutral-400 mx-4 tracking-wide"}>
           {(params as unknown as MovieItem).overview}
         </Text>
+        <Cast
+          cast={[
+            {
+              personName: "Keanu Reaves",
+              characterName: "John Wick",
+            },
+            {
+              personName: "Keanu Reaves",
+              characterName: "John Wick",
+            },
+            {
+              personName: "Keanu Reaves",
+              characterName: "John Wick",
+            },
+            {
+              personName: "Keanu Reaves",
+              characterName: "John Wick",
+            },
+            {
+              personName: "Keanu Reaves",
+              characterName: "John Wick",
+            },
+          ]}
+        />
       </View>
     </ScrollView>
   );

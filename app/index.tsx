@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
   Bars3CenterLeftIcon,
@@ -8,10 +8,19 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeStyles } from "@/constants/Colors";
 import TrendingMovies from "@/components/TrendingMovies";
-import { MovieItem } from "@/config/api";
+import { getDiscoverMovies, MovieItem } from "@/config/api";
 import MovieList from "@/components/MovieList";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Index() {
+  const {
+    isPending,
+    error,
+    data: MoviesData,
+  } = useQuery({
+    queryKey: [""],
+    queryFn: async () => await getDiscoverMovies(),
+  });
   const movies: MovieItem[] = [
     {
       adult: false,
@@ -50,6 +59,16 @@ export default function Index() {
     React.useState<MovieItem[]>(movies);
   const [topRatedMovies, setTopRatedMovies] =
     React.useState<MovieItem[]>(movies);
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+    if (MoviesData) {
+      console.log(MoviesData?.data?.results);
+      setTopRatedMovies(MoviesData?.data?.results);
+    }
+  }, [MoviesData, error]);
+
   return (
     <SafeAreaView className={"flex-1 bg-neutral-900"}>
       <StatusBar style="light" />
