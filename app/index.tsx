@@ -23,7 +23,7 @@ export default function Index() {
       popularity: 10.0,
       poster_path: "/path/to/poster",
       release_date: "2022-01-01",
-      title: "Title",
+      title: "Jujustu kaisen: Sukuna fire arrow",
       video: false,
       vote_average: 7.5,
       vote_count: 100,
