@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
   Bars3CenterLeftIcon,
@@ -8,7 +8,12 @@ import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeStyles } from "@/constants/Colors";
 import TrendingMovies from "@/components/TrendingMovies";
-import { getDiscoverMovies, MovieItem } from "@/config/api";
+import {
+  getTopRatedMovies,
+  getTrendingMovies,
+  getUpcomingMovies,
+  MovieItem,
+} from "@/config/api";
 import MovieList from "@/components/MovieList";
 import { useQuery } from "@tanstack/react-query";
 
@@ -18,8 +23,24 @@ export default function Index() {
     error,
     data: MoviesData,
   } = useQuery({
-    queryKey: [""],
-    queryFn: async () => await getDiscoverMovies(),
+    queryKey: ["top-rated-movies"],
+    queryFn: async () => await getTopRatedMovies(),
+  });
+  const {
+    isPending: isPendingTrending,
+    error: errorTrending,
+    data: TrendingMoviesData,
+  } = useQuery({
+    queryKey: ["trending-movies"],
+    queryFn: async () => await getTrendingMovies(),
+  });
+  const {
+    isPending: isPendingUpcoming,
+    error: errorUpcoming,
+    data: UpcomingMoviesData,
+  } = useQuery({
+    queryKey: ["upcoming-movies"],
+    queryFn: async () => await getUpcomingMovies(),
   });
   const movies: MovieItem[] = [
     {
@@ -59,15 +80,6 @@ export default function Index() {
     React.useState<MovieItem[]>(movies);
   const [topRatedMovies, setTopRatedMovies] =
     React.useState<MovieItem[]>(movies);
-  useEffect(() => {
-    if (error) {
-      console.log(error);
-    }
-    if (MoviesData) {
-      console.log(MoviesData?.data?.results);
-      setTopRatedMovies(MoviesData?.data?.results);
-    }
-  }, [MoviesData, error]);
 
   return (
     <SafeAreaView className={"flex-1 bg-neutral-900"}>
@@ -85,9 +97,17 @@ export default function Index() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 10 }}
       >
-        <TrendingMovies data={trendingMovies} />
-        <MovieList data={upcomingMovies} title={"Upcoming"} />
-        <MovieList data={topRatedMovies} title={"Top Rated"} />
+        {TrendingMoviesData && TrendingMoviesData?.data?.results && (
+          <TrendingMovies data={TrendingMoviesData?.data?.results} />
+        )}
+
+        {UpcomingMoviesData && (
+          <MovieList
+            data={UpcomingMoviesData?.data?.results}
+            title={"Upcoming"}
+          />
+        )}
+        <MovieList data={MoviesData?.data?.results} title={"Top Rated"} />
       </ScrollView>
     </SafeAreaView>
   );

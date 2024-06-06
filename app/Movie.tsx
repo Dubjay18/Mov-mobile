@@ -57,7 +57,11 @@ export default function MovieScreen() {
       </View>
       <View>
         <Image
-          source={require("../assets/images/sukuna.jpg")}
+          source={{
+            uri: `https://image.tmdb.org/t/p/original${
+              (params as unknown as MovieItem)?.backdrop_path
+            }`,
+          }}
           style={{
             width,
             height: height * 0.55,
@@ -96,9 +100,24 @@ export default function MovieScreen() {
         <Text
           className={"text-neutral-400 text-base text-center font-semibold"}
         >
-          Released . 2024 . 170min
+          Released .{" "}
+          {(params as unknown as MovieItem).release_date?.split("-")[0]} .
+          170min
         </Text>
         <View className={"flex-row mx-4 space-x-2 justify-center"}>
+          {/*{*/}
+          {/*  // Genres*/}
+          {/*  (params as unknown as MovieItem)?.genres?.map((genre, index) => (*/}
+          {/*      <Text*/}
+          {/*          key={index}*/}
+          {/*          className={*/}
+          {/*          "text-neutral-400 text-base text-center font-semibold"*/}
+          {/*          }*/}
+          {/*      >*/}
+          {/*          {genre.name}*/}
+          {/*      </Text>*/}
+          {/*      ))*/}
+          {/*}*/}
           <Text
             className={"text-neutral-400 text-base text-center font-semibold"}
           >
@@ -118,30 +137,36 @@ export default function MovieScreen() {
         <Text className={"text-neutral-400 mx-4 tracking-wide"}>
           {(params as unknown as MovieItem).overview}
         </Text>
-        <Cast
-          cast={[
-            {
-              personName: "Keanu Reaves",
-              characterName: "John Wick",
-            },
-            {
-              personName: "Keanu Reaves",
-              characterName: "John Wick",
-            },
-            {
-              personName: "Keanu Reaves",
-              characterName: "John Wick",
-            },
-            {
-              personName: "Keanu Reaves",
-              characterName: "John Wick",
-            },
-            {
-              personName: "Keanu Reaves",
-              characterName: "John Wick",
-            },
-          ]}
-        />
+        {
+          // Cast
+          (params as unknown as MovieItem)?.id && (
+            <Cast
+              movie_id={(params as unknown as MovieItem)?.id}
+              cast={[
+                {
+                  personName: "Keanu Reaves",
+                  characterName: "John Wick",
+                },
+                {
+                  personName: "Keanu Reaves",
+                  characterName: "John Wick",
+                },
+                {
+                  personName: "Keanu Reaves",
+                  characterName: "John Wick",
+                },
+                {
+                  personName: "Keanu Reaves",
+                  characterName: "John Wick",
+                },
+                {
+                  personName: "Keanu Reaves",
+                  characterName: "John Wick",
+                },
+              ]}
+            />
+          )
+        }
       </View>
     </ScrollView>
   );

@@ -13,7 +13,9 @@ export default function MovieCard({
   return (
     <TouchableWithoutFeedback onPress={handleClick}>
       <Image
-        source={require("../assets/images/sukuna.jpg")}
+        source={{
+          uri: `https://image.tmdb.org/t/p/original${movie?.poster_path}`,
+        }}
         className={"rounded-3xl"}
         style={{
           width: width * 0.6,
