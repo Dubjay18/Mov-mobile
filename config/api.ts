@@ -1,12 +1,4 @@
-import axios, { Axios } from "axios";
-
-export const apiClient = new Axios({
-  baseURL: "https://api.themoviedb.org/3",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_KEY}`,
-  },
-});
+import axios from "axios";
 
 export const getDiscoverMovies = async () => {
   try {
@@ -97,6 +89,22 @@ export const getSimilarMovies = async (movie_id: number) => {
         Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_KEY}`,
       },
     };
+    return await axios(configurationObject);
+  } catch (err) {
+    console.error(err, "eer");
+  }
+};
+export const getMovieDetails = async (movie_id: number) => {
+  try {
+    const configurationObject = {
+      method: "get",
+      url: `https://api.themoviedb.org/3/movie/${movie_id}?language=en-US`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_KEY}`,
+      },
+    };
+
     return await axios(configurationObject);
   } catch (err) {
     console.error(err, "eer");

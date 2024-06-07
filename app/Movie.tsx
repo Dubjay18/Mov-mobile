@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Dimensions,
   Image,
   Platform,
@@ -13,7 +14,7 @@ import { themeStyles } from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { getSimilarMovies, MovieItem } from "@/config/api";
+import { getMovieDetails, getSimilarMovies } from "@/config/api";
 import Cast from "@/components/Cast";
 import { useQuery } from "@tanstack/react-query";
 import MovieList from "@/components/MovieList";
@@ -29,9 +30,18 @@ export default function MovieScreen() {
     error: errorSimilarMovies,
     data: similarMoviesData,
   } = useQuery({
-    queryKey: ["similar-movies", (params as unknown as MovieItem)?.id],
+    queryKey: ["similar-movies", (params as unknown as any)?.movie_id],
     queryFn: async () =>
-      await getSimilarMovies((params as unknown as MovieItem)?.id),
+      await getSimilarMovies((params as unknown as any)?.movie_id),
+  });
+  const {
+    isPending: isPending,
+    error: error,
+    data: MovieDetails,
+  } = useQuery({
+    queryKey: ["movie", (params as unknown as any)?.movie_id],
+    queryFn: async () =>
+      await getMovieDetails((params as unknown as any)?.movie_id),
   });
 
   return (
@@ -66,105 +76,94 @@ export default function MovieScreen() {
           </TouchableOpacity>
         </SafeAreaView>
       </View>
-      <View>
-        <Image
-          source={{
-            uri: `https://image.tmdb.org/t/p/original${
-              (params as unknown as MovieItem)?.backdrop_path
-            }`,
-          }}
-          style={{
-            width,
-            height: height * 0.55,
-          }}
-        />
-        <LinearGradient
-          colors={["transparent", "rgba(23,23,23,0.8)", "rgba(23,23,23,1)"]}
-          style={{
-            width,
-            height: height * 0.48,
-          }}
-          start={{
-            x: 0.5,
-            y: 0,
-          }}
-          end={{
-            x: 0.5,
-            y: 1,
-          }}
-          className={"absolute bottom-0"}
-        />
-      </View>
-      <View
-        style={{
-          marginTop: -(height * 0.09),
-        }}
-        className={"space-y-3"}
-      >
-        <Text
-          className={
-            "text-white text-3xl text-center tracking-wider font-bold "
-          }
-        >
-          {(params as unknown as MovieItem)?.title}
-        </Text>
-        <Text
-          className={"text-neutral-400 text-base text-center font-semibold"}
-        >
-          Released .{" "}
-          {(params as unknown as MovieItem).release_date?.split("-")[0]} .
-          170min
-        </Text>
-        <View className={"flex-row mx-4 space-x-2 justify-center"}>
-          {/*{*/}
-          {/*  // Genres*/}
-          {/*  (params as unknown as MovieItem)?.genres?.map((genre, index) => (*/}
-          {/*      <Text*/}
-          {/*          key={index}*/}
-          {/*          className={*/}
-          {/*          "text-neutral-400 text-base text-center font-semibold"*/}
-          {/*          }*/}
-          {/*      >*/}
-          {/*          {genre.name}*/}
-          {/*      </Text>*/}
-          {/*      ))*/}
-          {/*}*/}
-          <Text
-            className={"text-neutral-400 text-base text-center font-semibold"}
-          >
-            Action .
-          </Text>
-          <Text
-            className={"text-neutral-400 text-base text-center font-semibold"}
-          >
-            Thrill .
-          </Text>
-          <Text
-            className={"text-neutral-400 text-base text-center font-semibold"}
-          >
-            Comedy
-          </Text>
+      {isPending ? (
+        <View className={"max-h-48"}>
+          <ActivityIndicator color={"white"} size={"large"} />
         </View>
-        <Text className={"text-neutral-400 mx-4 tracking-wide"}>
-          {(params as unknown as MovieItem).overview}
-        </Text>
-        {
-          // Cast
-          (params as unknown as MovieItem)?.id && (
-            <Cast movie_id={(params as unknown as MovieItem)?.id} />
-          )
-        }
-        {
-          // Similar Movies
-          similarMoviesData && (
-            <MovieList
-              data={similarMoviesData?.data?.results}
-              title={"Similar movies"}
-              hideSeeAll
+      ) : (
+        <>
+          <View>
+            <Image
+              source={{
+                uri: `https://image.tmdb.org/t/p/original${MovieDetails?.data?.backdrop_path}`,
+              }}
+              style={{
+                width,
+                height: height * 0.55,
+              }}
             />
-          )
-        }
-      </View>
+            <LinearGradient
+              colors={["transparent", "rgba(23,23,23,0.8)", "rgba(23,23,23,1)"]}
+              style={{
+                width,
+                height: height * 0.48,
+              }}
+              start={{
+                x: 0.5,
+                y: 0,
+              }}
+              end={{
+                x: 0.5,
+                y: 1,
+              }}
+              className={"absolute bottom-0"}
+            />
+          </View>
+          <View
+            style={{
+              marginTop: -(height * 0.09),
+            }}
+            className={"space-y-3"}
+          >
+            <Text
+              className={
+                "text-white text-3xl text-center tracking-wider font-bold "
+              }
+            >
+              {MovieDetails?.data?.title}
+            </Text>
+            <Text
+              className={"text-neutral-400 text-base text-center font-semibold"}
+            >
+              Released . {MovieDetails?.data?.release_date?.split("-")[0]} .
+              170min
+            </Text>
+            <View className={"flex-row mx-4 space-x-2 justify-center"}>
+              {// Genres
+              MovieDetails?.data?.genres?.map(
+                (genre: IGenre, index: number) => (
+                  <Text
+                    key={index}
+                    className={
+                      "text-neutral-400 text-base text-center font-semibold"
+                    }
+                  >
+                    {genre.name}{" "}
+                    {index + 1 < MovieDetails?.data?.genres?.length && "."}
+                  </Text>
+                ),
+              )}
+            </View>
+            <Text className={"text-neutral-400 mx-4 tracking-wide"}>
+              {MovieDetails?.data?.overview}
+            </Text>
+            {
+              // Cast
+              params && <Cast movie_id={(params as any)?.movie_id} />
+            }
+            {
+              // Similar Movies
+              similarMoviesData && (
+                <MovieList
+                  data={similarMoviesData?.data?.results}
+                  title={"Similar movies"}
+                  hideSeeAll
+                />
+              )
+            }
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 }

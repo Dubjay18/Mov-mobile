@@ -1,6 +1,7 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { getCredits } from "@/config/api";
+import { useEffect } from "react";
 
 export default function Cast({ movie_id }: { movie_id: number }) {
   const {
@@ -11,6 +12,9 @@ export default function Cast({ movie_id }: { movie_id: number }) {
     queryKey: ["credits", movie_id],
     queryFn: async () => await getCredits(movie_id),
   });
+  useEffect(() => {
+    console.log(castError);
+  }, [castError]);
   return (
     <View className={"my-6"}>
       <Text className={"text-lg mx-4 mb-5 text-white"}>Top Cast</Text>

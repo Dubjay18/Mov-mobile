@@ -49,7 +49,9 @@ export default function MovieList({
               onPress={() =>
                 router.push({
                   pathname: "/Movie",
-                  params: movie as unknown as any,
+                  params: {
+                    movie_id: movie.id,
+                  },
                 })
               }
             >
