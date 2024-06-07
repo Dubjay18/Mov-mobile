@@ -13,8 +13,10 @@ import { themeStyles } from "@/constants/Colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { MovieItem } from "@/config/api";
+import { getSimilarMovies, MovieItem } from "@/config/api";
 import Cast from "@/components/Cast";
+import { useQuery } from "@tanstack/react-query";
+import MovieList from "@/components/MovieList";
 
 var { width, height } = Dimensions.get("window");
 const ios = Platform.OS === "ios";
@@ -22,7 +24,16 @@ const topMargin = ios ? "" : "mt-3";
 export default function MovieScreen() {
   const params = useLocalSearchParams();
   const [isFavorite, setIsFavorite] = useState(false);
-  // useEffect(() => {}, [params]);
+  const {
+    isPending: isPendingSimilarMovies,
+    error: errorSimilarMovies,
+    data: similarMoviesData,
+  } = useQuery({
+    queryKey: ["similar-movies", (params as unknown as MovieItem)?.id],
+    queryFn: async () =>
+      await getSimilarMovies((params as unknown as MovieItem)?.id),
+  });
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -140,30 +151,16 @@ export default function MovieScreen() {
         {
           // Cast
           (params as unknown as MovieItem)?.id && (
-            <Cast
-              movie_id={(params as unknown as MovieItem)?.id}
-              cast={[
-                {
-                  personName: "Keanu Reaves",
-                  characterName: "John Wick",
-                },
-                {
-                  personName: "Keanu Reaves",
-                  characterName: "John Wick",
-                },
-                {
-                  personName: "Keanu Reaves",
-                  characterName: "John Wick",
-                },
-                {
-                  personName: "Keanu Reaves",
-                  characterName: "John Wick",
-                },
-                {
-                  personName: "Keanu Reaves",
-                  characterName: "John Wick",
-                },
-              ]}
+            <Cast movie_id={(params as unknown as MovieItem)?.id} />
+          )
+        }
+        {
+          // Similar Movies
+          similarMoviesData && (
+            <MovieList
+              data={similarMoviesData?.data?.results}
+              title={"Similar movies"}
+              hideSeeAll
             />
           )
         }

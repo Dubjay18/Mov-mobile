@@ -16,9 +16,11 @@ var { width, height } = Dimensions.get("window");
 export default function MovieList({
   data,
   title,
+  hideSeeAll,
 }: {
   data: MovieItem[];
   title: string;
+  hideSeeAll?: boolean;
 }) {
   const router = useRouter();
   const imageBaseUrl = "https://image.tmdb.org/t/p/original";
@@ -27,11 +29,13 @@ export default function MovieList({
     <View className={"mb-4 space-y-8"}>
       <View className={"mx-4 flex-row justify-between items-center"}>
         <Text className={"text-white text-xl"}>{title}</Text>
-        <TouchableOpacity>
-          <Text style={themeStyles.text} className={"text-lg"}>
-            See All
-          </Text>
-        </TouchableOpacity>
+        {!hideSeeAll && (
+          <TouchableOpacity>
+            <Text style={themeStyles.text} className={"text-lg"}>
+              See All
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       <ScrollView
         horizontal
