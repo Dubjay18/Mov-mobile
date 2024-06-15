@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Button,
   Dimensions,
   Image,
   Platform,
@@ -29,6 +30,7 @@ export default function MovieScreen() {
     isPending: isPendingSimilarMovies,
     error: errorSimilarMovies,
     data: similarMoviesData,
+    refetch: refetchSimilarMovies,
   } = useQuery({
     queryKey: ["similar-movies", (params as unknown as any)?.movie_id],
     queryFn: async () =>
@@ -38,12 +40,41 @@ export default function MovieScreen() {
     isPending: isPending,
     error: error,
     data: MovieDetails,
+    refetch: refetchMovieDetails,
   } = useQuery({
     queryKey: ["movie", (params as unknown as any)?.movie_id],
     queryFn: async () =>
       await getMovieDetails((params as unknown as any)?.movie_id),
   });
 
+  async function retry() {
+    await refetchMovieDetails();
+    await refetchSimilarMovies();
+  }
+
+  if (isPending) {
+    return (
+      <View className={"flex-1 justify-center items-center"}>
+        <ActivityIndicator
+          size={"large"}
+          color={themeStyles.background.backgroundColor}
+        />
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View className={"flex-1 justify-center items-center"}>
+        <Text className={"text-white"}>An error occurred</Text>
+        <Button
+          title={"Retry"}
+          onPress={retry}
+          color={themeStyles.background.backgroundColor}
+        />
+      </View>
+    );
+  }
   return (
     <ScrollView
       contentContainerStyle={{
@@ -78,7 +109,10 @@ export default function MovieScreen() {
       </View>
       {isPending ? (
         <View className={"max-h-48"}>
-          <ActivityIndicator color={"white"} size={"large"} />
+          <ActivityIndicator
+            color={themeStyles.background.backgroundColor}
+            size={"large"}
+          />
         </View>
       ) : (
         <>

@@ -1,7 +1,7 @@
 import {
   Dimensions,
+  FlatList,
   Image,
-  ScrollView,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -37,42 +37,40 @@ export default function MovieList({
           </TouchableOpacity>
         )}
       </View>
-      <ScrollView
+      <FlatList
         horizontal
-        showsHorizontalScrollIndicator={false}
+        data={data}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item: movie }) => (
+          <TouchableWithoutFeedback
+            onPress={() =>
+              router.push({
+                pathname: "/Movie",
+                params: {
+                  movie_id: movie.id,
+                },
+              })
+            }
+          >
+            <View className={"space-y-1 mr-4"}>
+              <Image
+                source={{ uri: `${imageBaseUrl}${movie?.poster_path}` }}
+                className={"rounded-3xl"}
+                style={{
+                  width: width * 0.33,
+                  height: height * 0.22,
+                }}
+              />
+              <Text className={"text-neutral-300 text-lg"}>
+                {movie.title.length > 14
+                  ? movie.title.slice(0, 14) + "..."
+                  : movie.title}
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
         contentContainerStyle={{ paddingLeft: 15 }}
-      >
-        {data &&
-          data?.map((movie, index) => (
-            <TouchableWithoutFeedback
-              key={index}
-              onPress={() =>
-                router.push({
-                  pathname: "/Movie",
-                  params: {
-                    movie_id: movie.id,
-                  },
-                })
-              }
-            >
-              <View className={"space-y-1 mr-4"}>
-                <Image
-                  source={{ uri: `${imageBaseUrl}${movie?.poster_path}` }}
-                  className={"rounded-3xl"}
-                  style={{
-                    width: width * 0.33,
-                    height: height * 0.22,
-                  }}
-                />
-                <Text className={"text-neutral-300 text-lg"}>
-                  {movie.title.length > 14
-                    ? movie.title.slice(0, 14) + "..."
-                    : movie.title}
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
-          ))}
-      </ScrollView>
+      />
     </View>
   );
 }

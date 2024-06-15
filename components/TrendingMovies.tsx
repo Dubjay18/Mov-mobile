@@ -2,12 +2,19 @@ import { Dimensions, Text, View } from "react-native";
 import Carousel from "react-native-snap-carousel";
 import { MovieItem } from "@/config/api";
 import MovieCard from "@/components/MovieCard";
+import { router } from "expo-router";
 
 var { width, height } = Dimensions.get("window");
 
 export default function TrendingMovies({ data }: { data: MovieItem[] }) {
-  const handleClick = () => {
+  const handleClick = (movie: MovieItem) => {
     console.log("Movie clicked!");
+    router.push({
+      pathname: "/Movie",
+      params: {
+        movie_id: movie.id,
+      },
+    });
   };
   return (
     <View className={"mb-4"}>
@@ -15,7 +22,7 @@ export default function TrendingMovies({ data }: { data: MovieItem[] }) {
       <Carousel<MovieItem>
         data={data}
         renderItem={({ item }) => (
-          <MovieCard movie={item} handleClick={handleClick} />
+          <MovieCard movie={item} handleClick={() => handleClick(item)} />
         )}
         firstItem={1}
         inactiveSlideOpacity={0.6}

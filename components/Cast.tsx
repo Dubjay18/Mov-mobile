@@ -2,6 +2,7 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { getCredits } from "@/config/api";
 import { useEffect } from "react";
+import { router } from "expo-router";
 
 export default function Cast({ movie_id }: { movie_id: number }) {
   const {
@@ -26,7 +27,18 @@ export default function Cast({ movie_id }: { movie_id: number }) {
         {castData &&
           castData?.data &&
           castData?.data?.cast?.map((person: any, index: number) => (
-            <TouchableOpacity key={index} className={"mr-4 items-center"}>
+            <TouchableOpacity
+              onPress={() =>
+                router.push({
+                  pathname: "/cast",
+                  params: {
+                    person_id: person.id,
+                  },
+                })
+              }
+              key={index}
+              className={"mr-4 items-center"}
+            >
               <View
                 className={
                   "overflow-hidden rounded-full h-20 w-20 items-center border-neutral-500"

@@ -110,6 +110,38 @@ export const getMovieDetails = async (movie_id: number) => {
     console.error(err, "eer");
   }
 };
+export const getPerson = async (person_id: number) => {
+  try {
+    const configurationObject = {
+      method: "get",
+      url: `https://api.themoviedb.org/3/person/${person_id}?language=en-US`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_KEY}`,
+      },
+    };
+
+    return await axios(configurationObject);
+  } catch (err) {
+    console.error(err, "eer");
+  }
+};
+export const getPersonMovies = async (person_id: number) => {
+  try {
+    const configurationObject = {
+      method: "get",
+      url: `https://api.themoviedb.org/3/person/${person_id}/movie_credits?language=en-US`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_KEY}`,
+      },
+    };
+
+    return await axios(configurationObject);
+  } catch (err) {
+    console.error(err, "eer");
+  }
+};
 // discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc
 
 export type MovieItem = {

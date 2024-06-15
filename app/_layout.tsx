@@ -10,9 +10,6 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { TouchableOpacity, View } from "react-native";
-import { themeStyles } from "@/constants/Colors";
-import { ChevronLeftIcon } from "react-native-heroicons/solid";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -44,26 +41,12 @@ export default function RootLayout() {
             name="Movie"
             options={{
               headerShown: false,
-              header: (props) => (
-                <>
-                  <View
-                    className={
-                      " z-20 w-full flex-row justify-between items-center px-4 h-fit"
-                    }
-                  >
-                    <TouchableOpacity
-                      style={themeStyles.background}
-                      className={"rounded-xl p-1 "}
-                    >
-                      <ChevronLeftIcon
-                        size={28}
-                        strokeWidth={2.5}
-                        color={"white"}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </>
-              ),
+            }}
+          />
+          <Stack.Screen
+            name="cast"
+            options={{
+              headerShown: false,
             }}
           />
           <Stack.Screen name="+not-found" />

@@ -1,5 +1,11 @@
 import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {
   Bars3CenterLeftIcon,
   MagnifyingGlassIcon,
@@ -74,12 +80,13 @@ export default function Index() {
       vote_count: 200,
     },
   ];
-  const [trendingMovies, setTrendingMovies] =
-    React.useState<MovieItem[]>(movies);
-  const [upcomingMovies, setUpcomingMovies] =
-    React.useState<MovieItem[]>(movies);
-  const [topRatedMovies, setTopRatedMovies] =
-    React.useState<MovieItem[]>(movies);
+  if (isPending || isPendingTrending || isPendingUpcoming) {
+    return (
+      <View className={"flex-1 justify-center items-center"}>
+        <ActivityIndicator color={"white"} size={"large"} />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView className={"flex-1 bg-neutral-900"}>
