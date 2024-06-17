@@ -22,6 +22,7 @@ import {
 } from "@/config/api";
 import MovieList from "@/components/MovieList";
 import { useQuery } from "@tanstack/react-query";
+import { router } from "expo-router";
 
 export default function Index() {
   const {
@@ -96,7 +97,13 @@ export default function Index() {
         <Text className={"text-3xl text-white"}>
           <Text style={themeStyles.text}>M</Text>ovies
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            router.push({
+              pathname: "/Search",
+            });
+          }}
+        >
           <MagnifyingGlassIcon size={30} strokeWidth={2} color={"#fff"} />
         </TouchableOpacity>
       </View>

@@ -54,7 +54,7 @@ export default function MovieScreen() {
 
   if (isPending) {
     return (
-      <View className={"flex-1 justify-center items-center"}>
+      <View className={"flex-1 justify-center items-center bg-neutral-900"}>
         <ActivityIndicator
           size={"large"}
           color={themeStyles.background.backgroundColor}
@@ -65,7 +65,7 @@ export default function MovieScreen() {
 
   if (error) {
     return (
-      <View className={"flex-1 justify-center items-center"}>
+      <View className={"flex-1 justify-center items-center bg-neutral-900"}>
         <Text className={"text-white"}>An error occurred</Text>
         <Button
           title={"Retry"}

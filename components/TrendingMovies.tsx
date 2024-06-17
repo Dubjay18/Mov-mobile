@@ -8,7 +8,6 @@ var { width, height } = Dimensions.get("window");
 
 export default function TrendingMovies({ data }: { data: MovieItem[] }) {
   const handleClick = (movie: MovieItem) => {
-    console.log("Movie clicked!");
     router.push({
       pathname: "/Movie",
       params: {

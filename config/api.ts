@@ -142,6 +142,22 @@ export const getPersonMovies = async (person_id: number) => {
     console.error(err, "eer");
   }
 };
+export const searchMovies = async (query: string) => {
+  try {
+    const configurationObject = {
+      method: "get",
+      url: `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.EXPO_PUBLIC_TMDB_API_KEY}`,
+      },
+    };
+
+    return await axios(configurationObject);
+  } catch (err) {
+    console.error(err, "eer");
+  }
+};
 // discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc
 
 export type MovieItem = {
