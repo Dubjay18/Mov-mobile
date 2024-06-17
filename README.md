@@ -1,55 +1,58 @@
-# Welcome to your Expo app 👋
+# Mov App
 
-This is an [Expo](https://expo.dev) project created
-with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a movie application built with React Native and Expo. The application allows users to search for movies, view
+trending movies, and see details of each movie.
 
-## Get started
+## Features
 
-1. Install dependencies
+- Search for movies
+- View trending movies
+- View movie details
+- Add movies to favorites
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- React Native
+- Expo
+- TypeScript
+- JavaScript
+- Yarn
+- NPM
 
-   ```bash                                                      
-    npx expo start
-   ```
+## Getting Started
 
-In the output, you'll find options to open the app in a
+1. Clone the repository to your local machine.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project
-uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+2. Install the dependencies:
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you
-can start developing.
+3. Start the application:
 
-## Learn more
+```bash
+npx expo start
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+You can open the app in a development build, Android emulator, iOS simulator, or Expo Go.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with
-  our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll
-  create a project that runs on Android, iOS, and the web.
+## Project Structure
 
-## Join the community
+The project is structured as follows:
 
-Join our community of developers creating universal apps.
+- `app/`: This directory contains the main application code.
+    - `Movie.tsx`: This is the screen that displays the details of a movie.
+    - `Search.tsx`: This is the screen that allows users to search for movies.
+- `components/`: This directory contains reusable components used in the application.
+    - `TrendingMovies.tsx`: This component displays a list of trending movies.
+    - `MovieList.tsx`: This component displays a list of movies.
+- `config/`: This directory contains configuration files, such as the API configuration.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Contributing
+
+Contributions are welcome. Please open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
